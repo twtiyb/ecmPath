@@ -1,0 +1,239 @@
+JFDML JFormDesigner: "5.2.0.3.124" Java: "1.5.0_11" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "dataGroup"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 45, 620 )
+		} )
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "18dlu, labelcompgap, right:62dlu, labelcompgap, 80dlu, labelcompgap, 103dlu, 19dlu, 373dlu, labelcompgap, 75dlu, labelcompgap, 18dlu"
+			"$rowSpecs": "6dlu, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, 41dlu, linegap, default, linegap, default, linegap, default, linegap, 17dlu, linegap, default, linegap, default, linegap, 16dlu, linegap, pref, linegap, default, linegap, default"
+		} ) {
+			name: "frame1"
+			"title": "vczsvcxz"
+			"defaultCloseOperation": 3
+			"$locationPolicy": 1
+			"$sizePolicy": 1
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsSeparator" ) {
+				name: "separator1"
+				"text": "基本配置"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridWidth": 5
+				"gridX": 3
+				"gridY": 3
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane2"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "xmlConent"
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 3
+				"gridX": 9
+				"gridHeight": 33
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane6"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "list2"
+					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "list2ValueChanged", false ) )
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 11
+				"gridY": 3
+				"gridHeight": 33
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label1"
+				"textWithMnemonic": "数据库"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JRadioButton" ) {
+				name: "oracle"
+				"text": "oracle"
+				"$buttonGroup": new FormReference( "dataGroup" )
+				"selected": true
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "viewXml", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 5
+			} )
+			add( new FormComponent( "javax.swing.JRadioButton" ) {
+				name: "mysql"
+				"text": "mysql"
+				"$buttonGroup": new FormReference( "dataGroup" )
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "viewXml", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 7
+				"gridY": 5
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label2"
+				"textWithMnemonic": "url"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 7
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "url"
+				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 7
+				"gridX": 5
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label3"
+				"textWithMnemonic": "entity"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 9
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "mode"
+				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 9
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label4"
+				"textWithMnemonic": "mapper.java"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 11
+				"gridX": 3
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "mapperJava"
+				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 11
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label6"
+				"textWithMnemonic": "mapper.xml"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 13
+				"gridX": 3
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "mapperXml"
+				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 13
+				"gridX": 5
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label5"
+				"textWithMnemonic": "方法"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 15
+				"gridX": 3
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "checkBox1"
+				"text": "insert"
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 15
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "checkBox2"
+				"text": "delete"
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 15
+				"gridX": 7
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "checkBox3"
+				"text": "select"
+				addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 17
+				"gridX": 5
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "checkBox4"
+				"text": "update"
+				addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "textField1KeyReleased", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 17
+				"gridX": 7
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsSeparator" ) {
+				name: "separator2"
+				"text": "表"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 19
+				"gridWidth": 5
+				"gridX": 3
+			} )
+			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
+				name: "label7"
+				"textWithMnemonic": "表名以,分隔"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 21
+				"gridHeight": 13
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane7"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "textArea2"
+					addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "textField1KeyReleased", false ) )
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 21
+				"gridWidth": 3
+				"gridHeight": 13
+				"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+				"vAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane4"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 27
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button1"
+				"text": "生成文件"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button1ActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 35
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button2"
+				"text": "显示配置文件"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "viewXml", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 35
+				"gridX": 5
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button3"
+				"text": "保存配置文件"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "saveXmlFile", false ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 35
+				"gridX": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 30, 40 )
+			"size": new java.awt.Dimension( 1140, 575 )
+		} )
+	}
+}

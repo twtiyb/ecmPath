@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
+  
+<generatorConfiguration>  
+    <classPathEntry location="lib/ojdbc14_10.2.0.4.jar" />  
+  
+    <context id="DB2Tables" targetRuntime="MyBatis3">  
+  
+
+        <commentGenerator>  
+	    <property name="suppressAllComments" value="true" />  
+            <property name="suppressDate" value="true" />  
+        </commentGenerator>  
+  
+        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"  
+            connectionURL="jdbc:oracle:thin:@192.168.1.170:1521:ISCS07" userId="ecmdta" password="ecmdtapass">  
+        </jdbcConnection>  
+  
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="false" />  
+        </javaTypeResolver>  
+  
+        <javaModelGenerator targetPackage="cn.com.iscs.ecm.entity" targetProject="../ecm/src">  
+            <property name="enableSubPackages" value="true" />  
+            <property name="trimStrings" value="true" />  
+        </javaModelGenerator>  
+  
+        <sqlMapGenerator targetPackage="cn.com.iscs.ecm.mapper" targetProject="../ecm/src">  
+            <property name="enableSubPackages" value="true" />  
+        </sqlMapGenerator>  
+  
+        <javaClientGenerator type="XMLMAPPER"  
+            targetPackage="cn.com.iscs.ecm.mapper" targetProject="../ecm/src">  
+            <property name="enableSubPackages" value="true" />  
+        </javaClientGenerator>  
+ <!-- 
+        <iServiceGenerator   targetPackage="cn.com.iscs.ecm.service.impl" targetProject="../ecm/src">  
+            <property name="enableSubPackages" value="true" />  
+        </iServiceGenerator>  
+
+        <serviceGenerator   targetPackage="cn.com.iscs.ecm.service" targetProject="../ecm/src">  
+            <property name="enableSubPackages" value="true" />  
+        </serviceGenerator> 
+   -->
+<!-- 去掉自动生成的example类 此处配制表-->
+<table tableName="SA_SMS_QUERY" domainObjectName="saSmsQuery"
+	enableCountByExample="false" enableUpdateByExample="false"
+	enableDeleteByExample="false" enableSelectByExample="false"
+	selectByExampleQueryId="false">
+        </table>   
+   <table tableName="sa_sms_query_related" domainObjectName="saSmsQueryRelated"
+	enableCountByExample="false" enableUpdateByExample="false"
+	enableDeleteByExample="false" enableSelectByExample="false"
+	selectByExampleQueryId="false">
+        </table>   
+    </context>  
+</generatorConfiguration>
