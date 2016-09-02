@@ -56,7 +56,7 @@ public class IServiceGeneratorConfiguration extends PropertyHolder {
     }
 
     public XmlElement toXmlElement() {
-        XmlElement answer = new XmlElement("IServiceGenerator"); //$NON-NLS-1$
+        XmlElement answer = new XmlElement("iserviceGenerator"); //$NON-NLS-1$
 
         if (targetPackage != null) {
             answer.addAttribute(new Attribute("targetPackage", targetPackage)); //$NON-NLS-1$

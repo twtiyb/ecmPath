@@ -39,6 +39,7 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
      */
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseObject"));
         return super.modelBaseRecordClassGenerated(topLevelClass, introspectedTable);
     }
 
@@ -67,7 +68,7 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 
                 List<GeneratedJavaFile> fileList = new ArrayList<GeneratedJavaFile>();
                 if (this.context.getIserviceGeneratorConfiguration().getTargetPackage() != null
-                        && "".equals(this.context.getIserviceGeneratorConfiguration().getTargetPackage())) {
+                        && !"".equals(this.context.getIserviceGeneratorConfiguration().getTargetPackage())) {
                     Interface interfaceComp = new Interface(this.context.getIserviceGeneratorConfiguration().getTargetPackage() + ".I" + javaType + "Service");
                     interfaceComp.addSuperInterface(new FullyQualifiedJavaType("IBasicService<" + javaType + ">"));
                     interfaceComp.setVisibility(JavaVisibility.PUBLIC);
@@ -75,9 +76,9 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
                     fileList.add(IServiceFile);
                 }
                 if (this.context.getServiceGeneratorConfiguration().getTargetPackage() != null
-                        && "".equals(this.context.getServiceGeneratorConfiguration().getTargetPackage())) {
-                    TopLevelClass serviceClass = new TopLevelClass(this.context.getIserviceGeneratorConfiguration().getTargetPackage() + "." + javaType + "Service");
-                    serviceClass.addSuperInterface(new FullyQualifiedJavaType("I" + serviceClass.getType()));
+                        && !"".equals(this.context.getServiceGeneratorConfiguration().getTargetPackage())) {
+                    TopLevelClass serviceClass = new TopLevelClass(this.context.getServiceGeneratorConfiguration().getTargetPackage() + "." + javaType + "Service");
+                    serviceClass.addSuperInterface(new FullyQualifiedJavaType(this.context.getIserviceGeneratorConfiguration().getTargetPackage() + ".I" + javaType + "Service"));
                     serviceClass.setSuperClass(new FullyQualifiedJavaType("BasicService<" + javaType + ">"));
                     serviceClass.setVisibility(JavaVisibility.PUBLIC);
                     serviceClass.addAnnotation("@Service");
@@ -143,6 +144,8 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
         method.setVisibility(JavaVisibility.PUBLIC);
         method.addParameter(new Parameter(parameType, "record"));
         interfaze.addMethod(method);
+        //删除所有方法
+        interfaze.getMethods().clear();
 
         //增加父类
         FullyQualifiedJavaType interfanceType = new FullyQualifiedJavaType("IBasicDao<" + javaTypeName + ">");

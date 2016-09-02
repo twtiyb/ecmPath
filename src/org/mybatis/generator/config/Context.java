@@ -279,6 +279,12 @@ public class Context extends PropertyHolder {
         if (javaClientGeneratorConfiguration != null) {
             xmlElement.addElement(javaClientGeneratorConfiguration.toXmlElement());
         }
+        if (iserviceGeneratorConfiguration != null) {
+            xmlElement.addElement(iserviceGeneratorConfiguration.toXmlElement());
+        }
+        if (serviceGeneratorConfiguration != null) {
+            xmlElement.addElement(serviceGeneratorConfiguration.toXmlElement());
+        }
 
         for (TableConfiguration tableConfiguration : tableConfigurations) {
             xmlElement.addElement(tableConfiguration.toXmlElement());

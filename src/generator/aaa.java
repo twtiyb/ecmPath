@@ -49,10 +49,19 @@ public class aaa {
     public static final int FULL_WEIGHT = 1330;
     public static final int SMART_WEIGHT = 520;
     public static final int HEIGHT = 1000;
+    public static String filePath;
 
 
     private int window_size = 1;
     private Configuration config;
+
+    public void getPath() throws  Exception {
+        filePath  = aaa.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+        if (filePath.endsWith(".jar")) {// 可执行jar包运行的结果里包含".jar"
+            // 截取路径中的jar包名
+            filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+        }
+    }
 
     public void xmlToValue() throws IOException, XMLParserException {
         url.setText(config.getContexts().get(0)
@@ -63,6 +72,12 @@ public class aaa {
                 .getJavaClientGeneratorConfiguration().getTargetPackage());
         mapperXml.setText(config.getContexts().get(0)
                 .getSqlMapGeneratorConfiguration().getTargetPackage());
+        iservice.setText(config.getContexts().get(0)
+                .getIserviceGeneratorConfiguration().getTargetPackage());
+        iservice2.setText(config.getContexts().get(0)
+                .getServiceGeneratorConfiguration().getTargetPackage());
+        targetPath.setText(config.getContexts().get(0)
+                .getSqlMapGeneratorConfiguration().getTargetProject());
         if (config.getContexts().get(0).getJdbcConnectionConfiguration().getDriverClass().toLowerCase().contains("oracle")) {
             oracle.setSelected(true);
         } else {
@@ -70,26 +85,48 @@ public class aaa {
         }
 
         Context context = config.getContexts().get(0);
-        String tables = "";
-        for (TableConfiguration config : context.getTableConfigurations()) {
-            checkBox1.setSelected((Boolean) ReflectUtil.getFieldValue(config, "insertStatementEnabled"));
-            checkBox2.setSelected((Boolean) ReflectUtil.getFieldValue(config, "deleteByPrimaryKeyStatementEnabled"));
-            checkBox3.setSelected((Boolean) ReflectUtil.getFieldValue(config, "selectByPrimaryKeyStatementEnabled"));
-            checkBox4.setSelected((Boolean) ReflectUtil.getFieldValue(config, "updateByPrimaryKeyStatementEnabled"));
-            tables += config.getTableName() + "\n";
+        if (context.getTableConfigurations().size() > 0 ) {
+            boolean insertStatementEnabled = (Boolean) ReflectUtil.getFieldValue(context.getTableConfigurations().get(0), "insertStatementEnabled");
+            boolean deleteByPrimaryKeyStatementEnabled = (Boolean) ReflectUtil.getFieldValue(context.getTableConfigurations().get(0), "deleteByPrimaryKeyStatementEnabled");
+            boolean selectByPrimaryKeyStatementEnabled = (Boolean) ReflectUtil.getFieldValue(context.getTableConfigurations().get(0), "selectByPrimaryKeyStatementEnabled");
+            boolean updateByPrimaryKeyStatementEnabled = (Boolean) ReflectUtil.getFieldValue(context.getTableConfigurations().get(0), "updateByPrimaryKeyStatementEnabled");
+
+            String tables = "";
+            for (TableConfiguration config : context.getTableConfigurations()) {
+                checkBox1.setSelected(insertStatementEnabled);
+                checkBox2.setSelected(deleteByPrimaryKeyStatementEnabled);
+                checkBox3.setSelected(selectByPrimaryKeyStatementEnabled);
+                checkBox4.setSelected(updateByPrimaryKeyStatementEnabled);
+                tables += config.getTableName() + "\n";
+            }
+            textArea2.setText(tables);
         }
-        textArea2.setText(tables);
     }
 
     public void valueToXml() throws IOException, XMLParserException {
         config.getContexts().get(0).getJdbcConnectionConfiguration()
                 .setConnectionURL(url.getText());
         config.getContexts().get(0).getJavaModelGeneratorConfiguration()
+                .setTargetProject(targetPath.getText());
+        config.getContexts().get(0).getJavaClientGeneratorConfiguration()
+                .setTargetProject(targetPath.getText());
+        config.getContexts().get(0).getSqlMapGeneratorConfiguration()
+                .setTargetProject(targetPath.getText());
+        config.getContexts().get(0).getIserviceGeneratorConfiguration()
+                .setTargetProject(targetPath.getText());
+        config.getContexts().get(0).getServiceGeneratorConfiguration()
+                .setTargetProject(targetPath.getText());
+
+        config.getContexts().get(0).getJavaModelGeneratorConfiguration()
                 .setTargetPackage(mode.getText());
         config.getContexts().get(0).getJavaClientGeneratorConfiguration()
                 .setTargetPackage(mapperJava.getText());
         config.getContexts().get(0).getSqlMapGeneratorConfiguration()
                 .setTargetPackage(mapperXml.getText());
+        config.getContexts().get(0).getIserviceGeneratorConfiguration()
+                .setTargetPackage(iservice.getText());
+        config.getContexts().get(0).getServiceGeneratorConfiguration()
+                .setTargetPackage(iservice2.getText());
         if (oracle.isSelected()) {
             config.getContexts().get(0).getJdbcConnectionConfiguration().setDriverClass("oracle.jdbc.driver.OracleDriver");
         } else {
@@ -139,7 +176,7 @@ public class aaa {
         java.util.List<String> mes = new ArrayList<String>();
         try {
             ConfigurationParser cp = new ConfigurationParser(null);
-            config = cp.parseConfiguration(new File((String) list2.getSelectedValue()));
+            config = cp.parseConfiguration(new File(filePath + list2.getSelectedValue()));
             mes = Main.run(config);
         } catch (Exception ex) {
             result = "解析配置错误!";
@@ -185,7 +222,7 @@ public class aaa {
     private void list2ValueChanged() {
         try {
             ConfigurationParser cp = new ConfigurationParser(null);
-            this.config = cp.parseConfiguration(new File((String) list2.getSelectedValue()));
+            this.config = cp.parseConfiguration(new File(filePath + list2.getSelectedValue()));
             xmlConent.setText(config.toDocument().getFormattedContent());
             xmlToValue();
         } catch (IOException e) {
@@ -202,8 +239,9 @@ public class aaa {
             ConfigurationParser cp = new ConfigurationParser(null);
             InputStream is = new ByteArrayInputStream(xmlConent.getText().getBytes());
             config = cp.parseConfiguration(is);
-            FileUtil.saveFile(config.toDocument().getFormattedContent(), (String) list2.getSelectedValue(), false);
+            FileUtil.saveFile(config.toDocument().getFormattedContent(), filePath + list2.getSelectedValue(), false);
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(frame1, "配置文件格式错误,无法保存");
         }
     }
@@ -229,11 +267,17 @@ public class aaa {
         mapperJava = new JTextField();
         label6 = compFactory.createLabel("mapper.xml");
         mapperXml = new JTextField();
+        label8 = compFactory.createLabel("iservice");
+        iservice = new JTextField();
+        label9 = compFactory.createLabel("serviceImp");
+        iservice2 = new JTextField();
         label5 = compFactory.createLabel("\u65b9\u6cd5");
         checkBox1 = new JCheckBox();
         checkBox2 = new JCheckBox();
         checkBox3 = new JCheckBox();
         checkBox4 = new JCheckBox();
+        label10 = new JLabel();
+        targetPath = new JTextField();
         separator2 = compFactory.createSeparator("\u8868");
         label7 = compFactory.createLabel("\u8868\u540d\u4ee5,\u5206\u9694");
         scrollPane7 = new JScrollPane();
@@ -245,19 +289,19 @@ public class aaa {
 
         //======== frame1 ========
         {
-            frame1.setTitle("mapper生成器");
+            frame1.setTitle("mybatis\u6587\u4ef6\u751f\u6210\u5668");
             frame1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             Container frame1ContentPane = frame1.getContentPane();
             frame1ContentPane.setLayout(new FormLayout(
-                    "18dlu, $lcgap, right:62dlu, $lcgap, 80dlu, $lcgap, 103dlu, 19dlu, 373dlu, $lcgap, 75dlu, $lcgap, 18dlu",
-                    "6dlu, 9*($lgap, default), $lgap, 41dlu, 3*($lgap, default), $lgap, 17dlu, 2*($lgap, default), $lgap, 16dlu, $lgap, pref, 2*($lgap, default)"));
+                "19dlu, $lcgap, right:62dlu, $lcgap, 80dlu, $lcgap, 103dlu, 19dlu, 373dlu, $lcgap, 75dlu, $lcgap, 18dlu",
+                "6dlu, 12*($lgap, default), $lgap, 41dlu, 3*($lgap, default), $lgap, 17dlu, 2*($lgap, default), $lgap, 16dlu, $lgap, pref, 2*($lgap, default)"));
             frame1ContentPane.add(separator1, CC.xywh(3, 3, 5, 1));
 
             //======== scrollPane2 ========
             {
                 scrollPane2.setViewportView(xmlConent);
             }
-            frame1ContentPane.add(scrollPane2, CC.xywh(9, 3, 1, 33));
+            frame1ContentPane.add(scrollPane2, CC.xywh(9, 3, 1, 37));
 
             //======== scrollPane6 ========
             {
@@ -271,7 +315,7 @@ public class aaa {
                 });
                 scrollPane6.setViewportView(list2);
             }
-            frame1ContentPane.add(scrollPane6, CC.xywh(11, 3, 1, 33));
+            frame1ContentPane.add(scrollPane6, CC.xywh(11, 3, 1, 37));
             frame1ContentPane.add(label1, CC.xy(3, 5));
 
             //---- oracle ----
@@ -334,7 +378,27 @@ public class aaa {
                 }
             });
             frame1ContentPane.add(mapperXml, CC.xywh(5, 13, 3, 1));
-            frame1ContentPane.add(label5, CC.xy(3, 15));
+            frame1ContentPane.add(label8, CC.xy(3, 15));
+
+            //---- iservice ----
+            iservice.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    textField1KeyReleased();
+                }
+            });
+            frame1ContentPane.add(iservice, CC.xywh(5, 15, 3, 1));
+            frame1ContentPane.add(label9, CC.xy(3, 17));
+
+            //---- iservice2 ----
+            iservice2.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    textField1KeyReleased();
+                }
+            });
+            frame1ContentPane.add(iservice2, CC.xywh(5, 17, 3, 1));
+            frame1ContentPane.add(label5, CC.xy(3, 19));
 
             //---- checkBox1 ----
             checkBox1.setText("insert");
@@ -344,7 +408,7 @@ public class aaa {
                     textField1KeyReleased();
                 }
             });
-            frame1ContentPane.add(checkBox1, CC.xy(5, 15));
+            frame1ContentPane.add(checkBox1, CC.xy(5, 19));
 
             //---- checkBox2 ----
             checkBox2.setText("delete");
@@ -354,7 +418,7 @@ public class aaa {
                     textField1KeyReleased();
                 }
             });
-            frame1ContentPane.add(checkBox2, CC.xy(7, 15));
+            frame1ContentPane.add(checkBox2, CC.xy(7, 19));
 
             //---- checkBox3 ----
             checkBox3.setText("select");
@@ -364,7 +428,7 @@ public class aaa {
                     textField1KeyReleased();
                 }
             });
-            frame1ContentPane.add(checkBox3, CC.xy(5, 17));
+            frame1ContentPane.add(checkBox3, CC.xy(5, 21));
 
             //---- checkBox4 ----
             checkBox4.setText("update");
@@ -374,9 +438,22 @@ public class aaa {
                     textField1KeyReleased();
                 }
             });
-            frame1ContentPane.add(checkBox4, CC.xy(7, 17));
-            frame1ContentPane.add(separator2, CC.xywh(3, 19, 5, 1));
-            frame1ContentPane.add(label7, CC.xywh(3, 21, 1, 13));
+            frame1ContentPane.add(checkBox4, CC.xy(7, 21));
+
+            //---- label10 ----
+            label10.setText("\u9879\u76ee\u8def\u5f84");
+            frame1ContentPane.add(label10, CC.xy(3, 23));
+
+            //---- targetPath ----
+            targetPath.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    textField1KeyReleased();
+                }
+            });
+            frame1ContentPane.add(targetPath, CC.xywh(5, 23, 3, 1));
+            frame1ContentPane.add(separator2, CC.xywh(3, 25, 5, 1));
+            frame1ContentPane.add(label7, CC.xywh(3, 27, 1, 9));
 
             //======== scrollPane7 ========
             {
@@ -390,8 +467,8 @@ public class aaa {
                 });
                 scrollPane7.setViewportView(textArea2);
             }
-            frame1ContentPane.add(scrollPane7, CC.xywh(5, 21, 3, 13, CC.FILL, CC.FILL));
-            frame1ContentPane.add(scrollPane4, CC.xy(9, 27));
+            frame1ContentPane.add(scrollPane7, CC.xywh(5, 27, 3, 9, CC.FILL, CC.FILL));
+            frame1ContentPane.add(scrollPane4, CC.xy(9, 33));
 
             //---- button1 ----
             button1.setText("\u751f\u6210\u6587\u4ef6");
@@ -401,7 +478,7 @@ public class aaa {
                     button1ActionPerformed(e);
                 }
             });
-            frame1ContentPane.add(button1, CC.xy(3, 35));
+            frame1ContentPane.add(button1, CC.xy(3, 39));
 
             //---- button2 ----
             button2.setText("\u663e\u793a\u914d\u7f6e\u6587\u4ef6");
@@ -411,7 +488,7 @@ public class aaa {
                     viewXml();
                 }
             });
-            frame1ContentPane.add(button2, CC.xy(5, 35));
+            frame1ContentPane.add(button2, CC.xy(5, 39));
 
             //---- button3 ----
             button3.setText("\u4fdd\u5b58\u914d\u7f6e\u6587\u4ef6");
@@ -421,20 +498,16 @@ public class aaa {
                     saveXmlFile();
                 }
             });
-            frame1ContentPane.add(button3, CC.xy(7, 35));
-            frame1.setSize(1140, 575);
+            frame1ContentPane.add(button3, CC.xy(7, 39));
+            frame1.pack();
             frame1.setLocationRelativeTo(null);
         }
-
-        //---- dataGroup ----
-        ButtonGroup dataGroup = new ButtonGroup();
-        dataGroup.add(oracle);
-        dataGroup.add(mysql);
         // //GEN-END:initComponents
 
 //		// 初始化 xmlList
         try {
-            File file = new File(this.getClass().getResource("/").toURI());
+            this.getPath();
+            File file = new File(filePath);
             DefaultListModel listModel = new DefaultListModel();
             for (File xml : file.listFiles()) {
                 if (xml.getName().toLowerCase().contains(".xml")) {
@@ -454,6 +527,8 @@ public class aaa {
             list2.setModel(listModel);
             list2.setSelectedIndex(0);
         } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -478,11 +553,17 @@ public class aaa {
     private JTextField mapperJava;
     private JLabel label6;
     private JTextField mapperXml;
+    private JLabel label8;
+    private JTextField iservice;
+    private JLabel label9;
+    private JTextField iservice2;
     private JLabel label5;
     private JCheckBox checkBox1;
     private JCheckBox checkBox2;
     private JCheckBox checkBox3;
     private JCheckBox checkBox4;
+    private JLabel label10;
+    private JTextField targetPath;
     private JComponent separator2;
     private JLabel label7;
     private JScrollPane scrollPane7;
