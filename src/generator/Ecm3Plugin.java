@@ -204,6 +204,7 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 
         //添加新方法
         addAllMethod(mapper, introspectedTable, "gets");
+        addGetsByMapMethod(mapper, introspectedTable, "getsByMap");
         return super.sqlMapDocumentGenerated(document, introspectedTable);
     }
 
@@ -415,6 +416,28 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 
         ele.addElement(new TextElement("from " + tablename(table)));
         ele.addElement(new TextElement("where ${where} order by ${sort}"));
+        mapper.addElement(ele);
+    }
+
+    private void addGetsByMapMethod(XmlElement mapper, IntrospectedTable table, String id) {
+        XmlElement ele = new XmlElement("select");
+        ele.addAttribute(new Attribute("id", id));
+        ele.addAttribute(new Attribute("parameterType", "java.util.HashMap"));
+        ele.addAttribute(new Attribute("resultMap", "BaseResultMap"));
+
+        ele.addElement(new TextElement("select "));
+
+        XmlElement include = new XmlElement("include");
+        include.addAttribute(new Attribute("refid", "Base_Column_List"));
+        ele.addElement(include);
+
+        ele.addElement(new TextElement("from " + tablename(table)));
+        ele.addElement(new TextElement("where 1=1\n" +
+                "        <foreach collection=\"map.keys\" item=\"_itemKey\" open=\"and\"  separator=\"and\">\n" +
+                "            <if test=\"null != map[_itemKey]\">\n" +
+                "                ${_itemKey} = #{map[${_itemKey}]}\n" +
+                "            </if>\n" +
+                "        </foreach>"));
         mapper.addElement(ele);
     }
 

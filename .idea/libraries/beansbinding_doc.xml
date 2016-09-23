@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="beansbinding-doc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/beansbinding.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-animation-1.4.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-binding-2.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-common-1.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-forms-1.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-looks-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-uif-lite.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-validation-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ojdbc7-12.1.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/beansbinding-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-uif-lite-javadoc.zip!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-uif-lite-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/beansbinding-src.zip!/src" />
+    </SOURCES>
+  </library>
+</component>
