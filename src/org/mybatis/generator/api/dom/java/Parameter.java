@@ -90,6 +90,10 @@ public class Parameter {
         return sb.toString();
     }
 
+    public void setType(FullyQualifiedJavaType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return getFormattedContent();
