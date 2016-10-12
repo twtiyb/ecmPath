@@ -464,9 +464,9 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 
 		ele.addElement(new TextElement("from " + tablename(table)));
 		ele.addElement(new TextElement("where 1=1\n" +
-				"        <foreach collection=\"map.keys\" item=\"_itemKey\" open=\"and\"  separator=\"and\">\n" +
+				"        <foreach collection=\"map.keys\" item=\"_itemKey\" open=\"\"  separator=\"\">\n" +
 				"            <if test=\"null != map[_itemKey]\">\n" +
-				"                ${_itemKey} = #{map[${_itemKey}]}\n" +
+				"               and ${_itemKey} = #{map[${_itemKey}]}\n" +
 				"            </if>\n" +
 				"        </foreach>"));
 		mapper.addElement(ele);
