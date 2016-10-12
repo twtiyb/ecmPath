@@ -26,6 +26,7 @@ public class Field extends JavaElement {
     private String initializationString;
     private boolean isTransient;
     private boolean isVolatile;
+    private String comment;
 
     /**
      *  
@@ -130,7 +131,20 @@ public class Field extends JavaElement {
 
         sb.append(';');
 
+        if (comment != null && comment.length() > 0) {
+            sb.append(" // ");
+            sb.append(comment);
+        }
+
         return sb.toString();
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public boolean isTransient() {

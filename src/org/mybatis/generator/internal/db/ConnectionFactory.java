@@ -15,16 +15,16 @@
  */
 package org.mybatis.generator.internal.db;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
+import org.mybatis.generator.config.JDBCConnectionConfiguration;
+import org.mybatis.generator.internal.ObjectFactory;
 
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.internal.ObjectFactory;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
+import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 /**
  * This class assumes that classes are cached elsewhere for performance reasons,
@@ -62,6 +62,7 @@ public class ConnectionFactory {
         if (stringHasValue(config.getPassword())) {
             props.setProperty("password", config.getPassword()); //$NON-NLS-1$
         }
+        props.setProperty("remarks", "true");
 
         props.putAll(config.getProperties());
 

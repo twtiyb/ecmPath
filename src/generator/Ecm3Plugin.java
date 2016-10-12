@@ -7,9 +7,7 @@ import org.mybatis.generator.api.dom.xml.*;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,11 +38,19 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 	@Override
 	public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
 		topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseObject"));
+		//将列注释 加入到entity中去
+		Map<String, IntrospectedColumn> columnMap = new HashMap<String, IntrospectedColumn>();
+		for (IntrospectedColumn column : introspectedTable.getBaseColumns()) {
+			columnMap.put(column.getJavaProperty(), column);
+		}
 		// 如果数据库中为number类型,则生成器默认它为short
 		// 将number类型的转成Long类型
 		for (org.mybatis.generator.api.dom.java.Field field : topLevelClass.getFields()) {
 			if (field.getType().getShortName().contains("Short")) {
 				field.setType(new FullyQualifiedJavaType("java.lang.Long"));
+			}
+			if (columnMap.get(field.getName()) != null) {
+				field.setComment(columnMap.get(field.getName()).getRemarks());
 			}
 		}
 		// 将number类型的转成Long类型
