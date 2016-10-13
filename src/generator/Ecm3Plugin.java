@@ -225,8 +225,12 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 		Iterator<Element> eleIterator = mapper.getElements().iterator();
 		while (eleIterator.hasNext()) {
 			XmlElement xmlEle = (XmlElement) eleIterator.next();
-			Attribute idAttr = getEleAttr(xmlEle, "id");
+			Attribute parameterTypeAttr = getEleAttr(xmlEle, "parameterType");
+			if (parameterTypeAttr != null && parameterTypeAttr.getValue().equals("java.lang.Short")) {
+				setFieldValue(parameterTypeAttr, "value", "java.lang.Long");
+			}
 
+			Attribute idAttr = getEleAttr(xmlEle, "id");
 			if (idAttr.getValue().equals("selectByPrimaryKey")) {
 				setFieldValue(idAttr, "value", "get");
 			} else if (idAttr.getValue().equals("deleteByPrimaryKey")) {
