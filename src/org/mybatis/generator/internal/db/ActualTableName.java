@@ -31,6 +31,7 @@ public class ActualTableName {
     private String catalog;
     private String schema;
     private String fullName;
+    private String remark;
 
     public ActualTableName(String catalog, String schema, String tableName) {
         this.catalog = catalog;
@@ -50,6 +51,14 @@ public class ActualTableName {
 
     public String getTableName() {
         return tableName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

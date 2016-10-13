@@ -15,15 +15,11 @@
  */
 package org.mybatis.generator.api.dom.java;
 
+import java.util.*;
+
 import static org.mybatis.generator.api.dom.OutputUtilities.calculateImports;
 import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author Jeff Butler
@@ -72,10 +68,6 @@ public class TopLevelClass extends InnerClass implements CompilationUnit {
     public String getFormattedContent() {
         StringBuilder sb = new StringBuilder();
 
-        for (String fileCommentLine : fileCommentLines) {
-            sb.append(fileCommentLine);
-            newLine(sb);
-        }
 
         if (stringHasValue(getType().getPackageName())) {
             sb.append("package "); //$NON-NLS-1$
@@ -91,7 +83,7 @@ public class TopLevelClass extends InnerClass implements CompilationUnit {
             sb.append(';');
             newLine(sb);
         }
-        
+
         if (staticImports.size() > 0) {
             newLine(sb);
         }
@@ -102,9 +94,16 @@ public class TopLevelClass extends InnerClass implements CompilationUnit {
             newLine(sb);
         }
 
+
         if (importStrings.size() > 0) {
             newLine(sb);
         }
+
+        for (String fileCommentLine : fileCommentLines) {
+            sb.append(fileCommentLine);
+            newLine(sb);
+        }
+
 
         sb.append(super.getFormattedContent(0));
 

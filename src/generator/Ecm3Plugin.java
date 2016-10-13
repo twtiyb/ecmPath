@@ -7,6 +7,7 @@ import org.mybatis.generator.api.dom.xml.*;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,9 +39,16 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 	@Override
 	public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
 		topLevelClass.setSuperClass(new FullyQualifiedJavaType("BaseObject"));
-		//将列注释 加入到entity中去
+		//将表注释 加入到entity头注释
+		String entityComment =
+				"/**\n" +
+				"* @date " + new SimpleDateFormat().format(new Date()) + "\n" +
+				"* @tableComment  " + introspectedTable.getFullyQualifiedTable().getRemark() + "\n" +
+				"*/";
+		topLevelClass.addFileCommentLine(entityComment);
+		//将列注释 加入到entity file 中去
 		Map<String, IntrospectedColumn> columnMap = new HashMap<String, IntrospectedColumn>();
-		for (IntrospectedColumn column : introspectedTable.getBaseColumns()) {
+		for (IntrospectedColumn column : introspectedTable.getAllColumns()) {
 			columnMap.put(column.getJavaProperty(), column);
 		}
 		// 如果数据库中为number类型,则生成器默认它为short
