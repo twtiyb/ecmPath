@@ -58,7 +58,10 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 				field.setType(new FullyQualifiedJavaType("java.lang.Long"));
 			}
 			if (columnMap.get(field.getName()) != null) {
-				field.setComment(columnMap.get(field.getName()).getRemarks());
+//				field.setComment(columnMap.get(field.getName()).getRemarks());
+				field.getJavaDocLines().add("/**");
+				field.getJavaDocLines().add("*" + columnMap.get(field.getName()).getRemarks());
+				field.getJavaDocLines().add("**/");
 			}
 		}
 		// 将number类型的转成Long类型
@@ -248,6 +251,7 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 		//添加新方法
 		addAllMethod(mapper, introspectedTable, "gets");
 		addGetsByMapMethod(mapper, introspectedTable, "getsByMap");
+		addGetCountByMapMethod(mapper, introspectedTable, "getCountByMap");
 		return super.sqlMapDocumentGenerated(document, introspectedTable);
 	}
 
@@ -474,6 +478,23 @@ public class Ecm3Plugin extends PluginAdapter implements Plugin {
 		include.addAttribute(new Attribute("refid", "Base_Column_List"));
 		ele.addElement(include);
 
+		ele.addElement(new TextElement("from " + tablename(table)));
+		ele.addElement(new TextElement("where 1=1\n" +
+				"        <foreach collection=\"map.keys\" item=\"_itemKey\" open=\"\"  separator=\"\">\n" +
+				"            <if test=\"null != map[_itemKey]\">\n" +
+				"               and ${_itemKey} = #{map[${_itemKey}]}\n" +
+				"            </if>\n" +
+				"        </foreach>"));
+		mapper.addElement(ele);
+	}
+
+	private void addGetCountByMapMethod(XmlElement mapper, IntrospectedTable table, String id) {
+		XmlElement ele = new XmlElement("select");
+		ele.addAttribute(new Attribute("id", id));
+		ele.addAttribute(new Attribute("parameterType", "java.util.HashMap"));
+		ele.addAttribute(new Attribute("resultType", "java.lang.Integer"));
+
+		ele.addElement(new TextElement("select count(1) "));
 		ele.addElement(new TextElement("from " + tablename(table)));
 		ele.addElement(new TextElement("where 1=1\n" +
 				"        <foreach collection=\"map.keys\" item=\"_itemKey\" open=\"\"  separator=\"\">\n" +
